@@ -1,3 +1,4 @@
+/* Container for the list */
 .todo-list {
   width: 100%;
   display: flex;
@@ -8,72 +9,115 @@
   margin: auto;
 }
 
+/* Each todo item container */
 .todo-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f4f4f4;
+  background: var(--todo-bg, #f4f4f4);
   border-radius: 8px;
   padding: 14px 18px;
   font-size: 18px;
-  transition: background 0.3s, opacity 0.3s;
+  transition: background 0.3s, opacity 0.3s, color 0.3s;
+  color: var(--text-color, #000);
 }
 
+/* Completed todo style */
 .todo-item.completed {
   opacity: 0.6;
-  background-color: #e0e0e0;
+  background-color: var(--todo-completed-bg, #e0e0e0);
+  text-decoration: line-through;
 }
 
+/* Checkbox styling */
 .todo-item input[type="checkbox"] {
   transform: scale(1.3);
   margin-right: 15px;
+  cursor: pointer;
+  accent-color: #4caf50;
 }
 
+/* Task text */
 .task-text {
   flex: 1;
   margin-left: 10px;
   font-family: 'Helvetica', sans-serif;
   font-size: 18px;
+  color: inherit;
 }
 
-.edit-input {
-  flex: 1;
-  font-size: 16px;
-  padding: 6px 10px;
-  margin-left: 10px;
-}
-
+/* Buttons container */
 .buttons {
   display: flex;
   gap: 10px;
 }
 
+/* General button styling */
 .btn {
   font-size: 14px;
   padding: 6px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Specific buttons */
 .edit-btn {
   background-color: #2196f3;
-  color: white;
 }
 
 .save-btn {
   background-color: #4caf50;
-  color: white;
 }
 
 .delete-btn {
   background-color: #f44336;
-  color: white;
+  transition: background-color 0.3s ease;
 }
 
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Empty message */
 .empty-message {
   text-align: center;
   font-size: 16px;
   color: #888;
   margin-top: 20px;
+}
+
+/* Due date styling: small rounded rectangle next to task */
+.due-date-pill {
+  background-color: var(--due-bg, #f0e6d2);
+  color: var(--due-text, #556b2f);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-left: 12px;
+  white-space: nowrap;
+  font-family: 'Helvetica', sans-serif;
+  user-select: none;
+}
+
+/* DARK MODE variables */
+.dark-mode {
+  --todo-bg: #121212;
+  --todo-completed-bg: #1e1e1e;
+  --text-color: #ffffff;
+  --due-bg: #004d00;
+  --due-text: #a5d6a7;
+}
+
+/* LIGHT MODE variables */
+.light-mode {
+  --todo-bg: #f4f4f4;
+  --todo-completed-bg: #e0e0e0;
+  --text-color: #000000;
+  --due-bg: #f0e6d2;
+  --due-text: #556b2f;
 }

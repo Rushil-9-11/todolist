@@ -1,14 +1,14 @@
-/* Fonts from Google Fonts - Add in public/index.html in <head> */
+/* Fonts from Google Fonts - Add in public/index.html <head> */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Helvetica&display=swap');
 
-/* Reset some default browser styles */
+/* Reset default browser styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Set a nice background and font for the whole app */
+/* Set base font and dynamic background/text color */
 body {
   font-family: 'Helvetica', Arial, sans-serif;
   background-color: var(--bg-color, #f0f2f5);
@@ -17,25 +17,25 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Heading font override */
+/* Headings use Montserrat */
 h1 {
   font-family: 'Montserrat', sans-serif;
 }
 
-/* Inherit fonts for inputs and buttons */
+/* Inherit font styles in inputs and buttons */
 button,
 input {
   font-family: inherit;
 }
 
-/* Accessible outlines */
+/* Focus styles for accessibility */
 button:focus,
 input:focus {
   outline: 2px solid #4caf50;
   outline-offset: 2px;
 }
 
-/* Smooth font rendering */
+/* Smoother fonts */
 body,
 button,
 input,
@@ -44,14 +44,18 @@ textarea {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Light theme variables */
-.light-mode {
-  --bg-color: #ffffff;
-  --text-color: #222222;
+/* Light Theme: Beige + Olive Green */
+body.light-mode {
+  --bg-color: beige;
+  --text-color: #556B2F; /* Olive Green */
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
-/* Dark theme variables */
-.dark-mode {
-  --bg-color: #222222;
-  --text-color: #eeeeee;
+/* Dark Theme: Black + Bright Green */
+body.dark-mode {
+  --bg-color: #000000;
+  --text-color: #00FF00; /* Bright Green */
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }

@@ -1,51 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import DatePicker from 'react-date-picker';
+import { FaRegCalendarAlt } from 'react-icons/fa';
+import 'react-date-picker/dist/DatePicker.css';
+import './TodoForm.css';
 
-function TodoForm({ todos, setTodos }) {
-  const [text, setText] = useState('');
-  const [date, setDate] = useState(new Date());
+function TodoForm({ addTodo }) {
+  const [input, setInput] = useState('');
+  const [dueDate, setDueDate] = useState(new Date());
+  const datePickerRef = useRef();
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!text.trim()) return;
-
-    // Check if task exists (case-insensitive)
-    const existingIndex = todos.findIndex(todo => todo.text.toLowerCase() === text.toLowerCase());
+    const trimmedText = input.trim();
+    if (!trimmedText) return;
 
     const newTodo = {
-      id: existingIndex >= 0 ? todos[existingIndex].id : Date.now(),
-      text,
+      id: Date.now(),
+      text: trimmedText,
       completed: false,
-      date: date.toDateString(), // Store date as string for easy filtering
+      dueDate,  // ES6 shorthand
     };
 
-    if (existingIndex >= 0) {
-      // Replace existing task
-      const updatedTodos = [...todos];
-      updatedTodos[existingIndex] = newTodo;
-      setTodos(updatedTodos);
-    } else {
-      setTodos([...todos, newTodo]);
-    }
+    addTodo(newTodo);
+    setInput('');
+    setDueDate(new Date());
+  };
 
-    setText('');
-    setDate(new Date());
+  // Manually open calendar popup from hidden DatePicker
+  const openCalendar = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.openCalendar();
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+    <form onSubmit={handleSubmit} className="todo-form">
       <input
         type="text"
-        placeholder="Enter task"
-        value={text}
-        onChange={e => setText(e.target.value)}
-        style={{ width: '60%', padding: '10px', fontSize: '16px' }}
+        placeholder="Add a new task"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        className="todo-input"
+        aria-label="Task description"
       />
-      <DatePicker onChange={setDate} value={date} clearIcon={null} />
-      <button type="submit" style={{ marginLeft: '10px', padding: '10px 15px' }}>
-        Add/Update Task
+
+      {/* Hidden DatePicker input */}
+      <DatePicker
+        onChange={setDueDate}
+        value={dueDate}
+        clearIcon={null}
+        calendarIcon={null}
+        ref={datePickerRef}
+        className="hidden-date-picker"
+        calendarClassName="todo-calendar" // Optional: for styling the calendar popup
+        aria-label="Select due date"
+      />
+
+      {/* Calendar icon triggers the calendar popup */}
+      <button
+        type="button"
+        className="calendar-btn"
+        onClick={openCalendar}
+        aria-label="Choose due date"
+      >
+        <FaRegCalendarAlt size={24} />
       </button>
+
+      <button type="submit" className="add-btn">Add</button>
     </form>
   );
 }
