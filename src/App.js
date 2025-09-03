@@ -6,9 +6,19 @@ import { FaSun, FaMoon } from 'react-icons/fa';
 import './App.css';
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    // ✅ Load from localStorage on first render
+    const saved = localStorage.getItem('todos');
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [filter, setFilter] = useState('all');
   const [darkMode, setDarkMode] = useState(false);
+
+  // ✅ Save todos to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   // Filter todos based on selected filter
   const filteredTodos = todos.filter(todo => {
@@ -76,9 +86,7 @@ function App() {
       </button>
 
       <TodoForm addTodo={addTodo} />
-
       <Filter filter={filter} setFilter={setFilter} />
-
       <TodoList
         todos={filteredTodos}
         setTodos={setTodos}
