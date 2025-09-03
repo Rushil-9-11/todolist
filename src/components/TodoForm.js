@@ -1,34 +1,51 @@
 import React, { useState } from 'react';
+import DatePicker from 'react-date-picker';
 
 function TodoForm({ todos, setTodos }) {
-  const [input, setInput] = useState('');
+  const [text, setText] = useState('');
+  const [date, setDate] = useState(new Date());
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (!input.trim()) return; // Ignore empty inputs
 
-    // Add new todo with unique id and default completed false
-    setTodos([
-      ...todos,
-      {
-        id: Date.now(),
-        text: input.trim(),
-        completed: false,
-      },
-    ]);
+    if (!text.trim()) return;
 
-    setInput(''); // Clear input field after adding
+    // Check if task exists (case-insensitive)
+    const existingIndex = todos.findIndex(todo => todo.text.toLowerCase() === text.toLowerCase());
+
+    const newTodo = {
+      id: existingIndex >= 0 ? todos[existingIndex].id : Date.now(),
+      text,
+      completed: false,
+      date: date.toDateString(), // Store date as string for easy filtering
+    };
+
+    if (existingIndex >= 0) {
+      // Replace existing task
+      const updatedTodos = [...todos];
+      updatedTodos[existingIndex] = newTodo;
+      setTodos(updatedTodos);
+    } else {
+      setTodos([...todos, newTodo]);
+    }
+
+    setText('');
+    setDate(new Date());
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
       <input
         type="text"
-        placeholder="Add a new task"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        placeholder="Enter task"
+        value={text}
+        onChange={e => setText(e.target.value)}
+        style={{ width: '60%', padding: '10px', fontSize: '16px' }}
       />
-      <button type="submit">Add</button>
+      <DatePicker onChange={setDate} value={date} clearIcon={null} />
+      <button type="submit" style={{ marginLeft: '10px', padding: '10px 15px' }}>
+        Add/Update Task
+      </button>
     </form>
   );
 }
